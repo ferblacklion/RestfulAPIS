@@ -1,29 +1,30 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
+/* eslint-disable no-console */
+const express = require("express");
+const mongoose = require("mongoose");
 
 const app = express();
 
 console.log(process.env.ENV);
-if (process.env.ENV === 'Test') {
-  console.log('test');
-  mongoose.connect('mongodb://localhost/bookAPI_test');
+
+if (process.env.ENV === "Test") {
+  console.log("test");
+  mongoose.connect("mongodb://localhost:27017/bookAPI_test");
 } else {
-  console.log('not test');
-  mongoose.connect('mongodb://localhost/bookAPITest');
+  console.log("not test");
+  mongoose.connect("mongodb://localhost:27017/bookAPI");
 }
 
 const port = process.env.PORT || 3000;
-const Book = require('./models/bookModel');
-const bookRouter = require('./routes/bookRouter')(Book);
+const Book = require("./models/bookModel");
+const bookRouter = require("./routes/bookRouter")(Book);
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-app.use('/api', bookRouter);
+app.use("/api", bookRouter);
 
-app.get('/', (req, res) => {
-  res.send('Welcome to my Nodemon API!');
+app.get("/", (req, res) => {
+  res.send("Welcome to my Nodemon API!");
 });
 
 app.server = app.listen(port, () => {

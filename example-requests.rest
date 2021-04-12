@@ -1,0 +1,19 @@
+
+### get
+GET http://localhost:4000/api/books/
+
+
+### get by id
+GET http://localhost:4000/api/books/6074d5f77df0c10718c07802
+
+### create
+POST http://localhost:4000/api/books/
+content-type: application/json
+
+{
+  "read": false,
+  "title": "TEST 3",
+  "genre": "Historical Fiction",
+  "author": "Lev Nikolayevich Tolstoy"
+}
+ ###
