@@ -7,6 +7,8 @@ function routes(Book) {
   const controller = booksController;
 
   bookRouter.route("/books").post(controller.post).get(controller.get);
+
+  // filter
   bookRouter.use("/books/:bookId", (req, res, next) => {
     Book.findById(req.params.bookId, (err, book) => {
       if (err) {
@@ -22,19 +24,7 @@ function routes(Book) {
   bookRouter
     .route("/books/:bookId")
     .get((req, res) => res.json(req.book))
-    .put((req, res) => {
-      const { book } = req;
-      book.title = req.body.title;
-      book.author = req.body.author;
-      book.genre = req.body.genre;
-      book.read = req.body.read;
-      book.save((err) => {
-        if (err) {
-          return res.send(err);
-        }
-        return res.json(book);
-      });
-    })
+    .put(controller.put)
     .patch((req, res) => {
       const { book } = req;
       // eslint-disable-next-line no-underscore-dangle
