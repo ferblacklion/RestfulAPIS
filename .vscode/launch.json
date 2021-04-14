@@ -26,7 +26,7 @@
         ],
         "env": {
             "NODE_ENV": "development",
-            "PORT": 4000
+            "PORT": "4000"
         },
         "sourceMaps": false,
 

@@ -1,18 +1,7 @@
 /* eslint-disable no-console */
 const express = require("express");
-const mongoose = require("mongoose");
-
+const db = require("./db/db");
 const app = express();
-
-console.log(process.env.ENV);
-
-if (process.env.ENV === "Test") {
-  console.log("test");
-  mongoose.connect("mongodb://localhost:27017/bookAPI_test");
-} else {
-  console.log("not test");
-  mongoose.connect("mongodb://localhost:27017/bookAPI");
-}
 
 const port = process.env.PORT || 3000;
 const Book = require("./models/bookModel");
@@ -27,8 +16,15 @@ app.get("/", (req, res) => {
   res.send("Welcome to my Nodemon API!");
 });
 
-app.server = app.listen(port, () => {
-  console.log(`Running on port ${port}`);
-});
+db()
+  .then(() => {
+    console.log("connected to DB!");
+    app.server = app.listen(port, () => {
+      console.log(`Running on port ${port}`);
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 module.exports = app;
