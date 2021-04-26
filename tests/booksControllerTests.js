@@ -1,5 +1,4 @@
 const sinon = require("sinon");
-const should = require("should");
 const bookController = require("../controllers/booksController");
 const Book = require("../models/bookModel");
 
@@ -39,6 +38,12 @@ describe("Book Controller Tests:", () => {
         genre: "Historical Fiction",
         author: "Lev Nikolayevich Tolstoy",
       };
+      const expected = {
+        read: false,
+        title: "War and Peace",
+        genre: "Historical Fiction",
+        author: "Lev Nikolayevich Tolstoy",
+      };
       const bookModel = new Book(book);
 
       const req = {
@@ -46,7 +51,6 @@ describe("Book Controller Tests:", () => {
           ...bookModel,
           save: function (cb) {
             cb(null);
-            done();
           },
         },
         body: book,
@@ -59,11 +63,13 @@ describe("Book Controller Tests:", () => {
 
       bookController.put(req, res);
 
-      res.status.calledWith(200).should.equal(true, `Bad Status `);
-      res.json.calledWith(bookModel).should.equal(true);
+      res.status.calledWith(200).should.equal(true, "bad status code");
+      res.json.calledWithMatch(expected).should.equal(true, "bad response");
+
+      done();
     });
 
-    it("should not update the book", () => {
+    it("should not update the book", (done) => {
       const book = {
         read: false,
         title: "War and Peace",
@@ -82,8 +88,9 @@ describe("Book Controller Tests:", () => {
 
       bookController.put(req, res);
 
-      res.status.calledWith(400).should.equal(true, `Bad Status `);
-      res.send.calledWith("bad request").should.equal(true);
+      res.status.calledWith(400).should.equal(true, `Bad Status code`);
+      res.send.calledWith("bad request").should.equal(true, "bad response");
+      done();
     });
   });
 });
